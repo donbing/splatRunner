@@ -13,11 +13,12 @@ namespace ConsoleApplication1
 
         private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
         {
-            [ConsoleKey.LeftArrow] = () => cursorY = cursorY - moveSpeed,
-            [ConsoleKey.RightArrow] = () => cursorY = cursorY + moveSpeed,
-            [ConsoleKey.UpArrow] = () => cursorX = cursorX - moveSpeed,
-            [ConsoleKey.DownArrow] = () => cursorX = cursorX + moveSpeed,
             [ConsoleKey.Escape] = () => shouldContinue = false,
+            [ConsoleKey.F9] = () => Beeper.DoBeepyTune(),
+            [ConsoleKey.LeftArrow] = () => cursorY -= moveSpeed,
+            [ConsoleKey.RightArrow] = () => cursorY += moveSpeed,
+            [ConsoleKey.UpArrow] = () => cursorX -= moveSpeed,
+            [ConsoleKey.DownArrow] = () => cursorX += moveSpeed,
             [ConsoleKey.W] = () => moveSpeed++,
             [ConsoleKey.S] = () => moveSpeed--,
         };
