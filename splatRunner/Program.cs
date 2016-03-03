@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace ConsoleApplication1
 {
@@ -10,15 +9,17 @@ namespace ConsoleApplication1
         private static int cursorX = Console.WindowHeight/2;
         private static int cursorY = Console.WindowWidth/2;
         private static bool shouldContinue = true;
+        private static int moveSpeed = 1;
 
         private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
         {
-            [ConsoleKey.LeftArrow] = () => cursorY = cursorY - 1,
-            [ConsoleKey.RightArrow] = () => cursorY = cursorY + 1,
-            [ConsoleKey.UpArrow] = () => cursorX = cursorX - 1,
-            [ConsoleKey.DownArrow] = () => cursorX = cursorX + 1,
+            [ConsoleKey.LeftArrow] = () => cursorY = cursorY - moveSpeed,
+            [ConsoleKey.RightArrow] = () => cursorY = cursorY + moveSpeed,
+            [ConsoleKey.UpArrow] = () => cursorX = cursorX - moveSpeed,
+            [ConsoleKey.DownArrow] = () => cursorX = cursorX + moveSpeed,
             [ConsoleKey.Escape] = () => shouldContinue = false,
-            [ConsoleKey.F9] = Beeper.DoBeepyTune
+            [ConsoleKey.W] = () => moveSpeed++,
+            [ConsoleKey.S] = () => moveSpeed--,
         };
 
         private static void Main(string[] args)
