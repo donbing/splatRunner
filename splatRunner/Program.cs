@@ -18,6 +18,7 @@ namespace ConsoleApplication1
             [ConsoleKey.UpArrow] = () => cursorX = cursorX - 1,
             [ConsoleKey.DownArrow] = () => cursorX = cursorX + 1,
             [ConsoleKey.Escape] = () => shouldContinue = false,
+            [ConsoleKey.F9] = Console.Beep,
         };
 
         private static void Main(string[] args)
@@ -29,7 +30,7 @@ namespace ConsoleApplication1
                 Console.Clear();
                 Console.SetCursorPosition(cursorY, cursorX);
                 Console.Write(playerSymbol);
-
+                
                 var move = Console.ReadKey();
 
                 if (KeyActions.ContainsKey(move.Key))
