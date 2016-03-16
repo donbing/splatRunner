@@ -5,7 +5,11 @@ namespace ConsoleApplication1
 {
     public class Beeper
     {
-        public static void DoBeepyTune()
+        public static async void DoBeepyTune()
+        {
+            new Thread(DoBeepyTune2).Start();
+        }
+        private async static void DoBeepyTune2()
         {
             Console.Beep(659, 125);
             Thread.Sleep(125);

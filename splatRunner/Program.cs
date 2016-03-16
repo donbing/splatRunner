@@ -1,35 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml;
 using ConsoleApplication1;
 
 namespace splatRunner
 {
+    internal class Character
+    {
+        public int xCoord { get; set; }
+        public int yCoord { get; set; }
+        public string symbol { get; set; }
+    } 
     internal class Program
     {
-        private const string playerSymbol = "@";
-        private static int cursorX = Console.WindowHeight / 2;
-        private static int cursorY = Console.WindowWidth / 2;
+        static Character player = new Character();
+        // private const string playerSymbol = "@";
+        // private static int playerY = Console.WindowHeight/2;
+        // private static int playerX = Console.WindowWidth/2;
         private static bool shouldContinue = true;
         private static int moveSpeed = 1;
-        private static GameMap map = new GameMap(Console.WindowHeight, Console.WindowWidth);
-
+        private const string enemy1Symbol = "#";
+        private static int enemy1Y = new Random().Next(0, Console.WindowHeight);
+        private static int enemy1X = new Random().Next(0, Console.WindowWidth);
+        
         private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
         {
             [ConsoleKey.Escape] = () => shouldContinue = false,
             [ConsoleKey.F9] = () => Beeper.DoBeepyTune(),
-            [ConsoleKey.LeftArrow] = () => cursorY -= moveSpeed,
-            [ConsoleKey.RightArrow] = () => cursorY += moveSpeed,
-            [ConsoleKey.UpArrow] = () => cursorX -= moveSpeed,
-            [ConsoleKey.DownArrow] = () => cursorX += moveSpeed,
+            [ConsoleKey.LeftArrow] = () => player.xCoord -= moveSpeed,
+            [ConsoleKey.RightArrow] = () => player.xCoord += moveSpeed,
+            [ConsoleKey.UpArrow] = () => player.yCoord -= moveSpeed,
+            [ConsoleKey.DownArrow] = () => player.yCoord += moveSpeed,
             [ConsoleKey.W] = () => moveSpeed++,
             [ConsoleKey.S] = () => moveSpeed--,
-            [ConsoleKey.F1] = () => ShowHelp(KeyActions),
+            [ConsoleKey.F1] = () => ShowHelp(),
         };
 
-        private static void ShowHelp(Dictionary<ConsoleKey, Action> keyActions)
+        private static void ShowHelp()
         {
-            Console.Clear();
-            foreach (var actionKey in keyActions)
+            Console.SetCursorPosition(0, 0);
+            foreach (var actionKey in KeyActions)
             {
                 Console.WriteLine(actionKey);
             }
@@ -40,12 +50,20 @@ namespace splatRunner
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
             Console.Clear();
-
+            
+            player.xCoord = Console.WindowWidth/2;
+            player.yCoord = Console.WindowHeight / 2;
+            player.symbol = "@";
             while (shouldContinue)
             {
-                map.Draw();
-                Console.SetCursorPosition(cursorY, cursorX);
-                Console.Write(playerSymbol);
+                WriteCharacterAtPosition(player);
+
+                var velocityGenerator = new Random();
+
+                enemy1X = enemy1X + velocityGenerator.Next(-1, 2);
+                enemy1Y = enemy1Y + velocityGenerator.Next(-1, 2); // best enemy name ever! enemyPoenemy1YonY
+
+                // WriteCharacterAtPosition (enemy1X, enemy1Y, enemy1Symbol);
 
                 var move = Console.ReadKey();
                 Console.Clear();
@@ -54,6 +72,12 @@ namespace splatRunner
                     KeyActions[move.Key].Invoke();
                 }
             }
+        }
+
+        private static void WriteCharacterAtPosition(Character thing )
+        {
+            Console.SetCursorPosition(thing.xCoord, thing.yCoord);
+            Console.Write(thing.symbol);
         }
     }
 }
