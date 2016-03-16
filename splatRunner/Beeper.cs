@@ -8,7 +8,6 @@ namespace ConsoleApplication1
     {
         public static void DoBeepyTune()
         {
-            await Task.Yield();
             Console.Beep(659, 125);
             Thread.Sleep(125);
             Console.Beep(659, 125);
