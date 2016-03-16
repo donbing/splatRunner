@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication1
 {
     public class Beeper
     {
-        public static async void DoBeepyTune()
+        public static void DoBeepyTune()
         {
-            new Thread(DoBeepyTune2).Start();
-        }
-        private async static void DoBeepyTune2()
-        {
+            await Task.Yield();
             Console.Beep(659, 125);
             Thread.Sleep(125);
             Console.Beep(659, 125);

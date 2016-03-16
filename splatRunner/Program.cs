@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
-using ConsoleApplication1;
 
 namespace splatRunner
 {
@@ -22,7 +20,7 @@ namespace splatRunner
         private const string enemy1Symbol = "#";
         private static int enemy1Y = new Random().Next(0, Console.WindowHeight);
         private static int enemy1X = new Random().Next(0, Console.WindowWidth);
-        
+
         private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
         {
             [ConsoleKey.Escape] = () => shouldContinue = false,
@@ -50,7 +48,7 @@ namespace splatRunner
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
             Console.Clear();
-            
+
             player.xCoord = Console.WindowWidth/2;
             player.yCoord = Console.WindowHeight / 2;
             player.symbol = "@";
