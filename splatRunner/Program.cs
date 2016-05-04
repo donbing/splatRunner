@@ -6,33 +6,83 @@ namespace splatRunner
 {
     public class Character
     {
-        public int xCoord { get; set; }
-        public int yCoord { get; set; }
+        public Coordinates position { get; set; }
         public string symbol { get; set; }
 
         public virtual void WriteCharacterAtPosition()
         {
-            Console.SetCursorPosition(xCoord, yCoord);
+            Console.SetCursorPosition(position.x, position.y);
             Console.Write(symbol);
         }
+    }
+
+    public class Coordinates
+    {
+        public int x { get; set; }
+        public int y { get; set; }
     }
 
     public class Enemy : Character
     {
         private static Random velocityGenerator = new Random();
-
+        Coordinates previousCoords;
+        
         public override void WriteCharacterAtPosition()
         {
-            xCoord = xCoord + velocityGenerator.Next(-1, 2);
-            yCoord = yCoord + velocityGenerator.Next(-1, 2); // best enemy name ever! enemyPoenemy1YonY
+            previousCoords = position;
 
-            Console.SetCursorPosition(xCoord, yCoord);
-            Console.Write(symbol);
+            GetValue();
         }
 
+        void GetValue()
+        {
+            var nextCoords = NextCoords();
+
+            if (nextCoords.x != previousCoords.x && nextCoords.y != previousCoords.y)
+            {
+                // best enemy name ever! enemyPoenemy1YonY
+
+                Console.SetCursorPosition(nextCoords.x, nextCoords.y);
+                Console.Write(symbol);
+
+                position.y = nextCoords.y;
+                position.x = nextCoords.x;
+            }
+            else
+            {
+                GetValue();
+            }
+        }
+
+        Coordinates NextCoords()
+        {
+            var nextCoords = new Coordinates();
+
+            nextCoords.x = position.x + velocityGenerator.Next(-1, 2);
+            nextCoords.y = position.y + velocityGenerator.Next(-1, 2);
+
+            if (nextCoords.x >= 119)
+            {
+                nextCoords.x = 0;
+            }
+            else if (position.x <= 0)
+            {
+                nextCoords.x = 119;
+            }
+
+            if (nextCoords.y >= 29)
+            {
+                nextCoords.y = 0;
+            }
+            else if (position.y <= 0)
+            {
+                nextCoords.y = 29;
+            }
+            return nextCoords;
+        }
     }
 
-    internal class Program
+     class Program
     {
         private static Random velocityGenerator = new Random();
 
@@ -40,29 +90,42 @@ namespace splatRunner
          
         static Character player = new Character
         {
-            xCoord = Console.WindowWidth / 2,
-            yCoord = Console.WindowHeight / 2,
+            position = new Coordinates()
+            {
+                x = Console.WindowWidth / 2, 
+                y = Console.WindowHeight / 2,
+            },
+            
             symbol = "@"
         };
 
         static Character enemy = new Enemy
         {
-            xCoord = velocityGenerator.Next(0, Console.WindowWidth),
-            yCoord = velocityGenerator.Next(0, Console.WindowHeight),
+            position = CreateRandomCoordinates(),
+
             symbol = "#"
         };
-        
-        private static bool shouldContinue = true;
+
+         static Coordinates CreateRandomCoordinates()
+         {
+             return new Coordinates()
+             {
+                 x = velocityGenerator.Next(0, Console.WindowWidth),
+                 y = velocityGenerator.Next(0, Console.WindowHeight),
+             };
+         }
+
+         private static bool shouldContinue = true;
         private static int moveSpeed = 1;
 
         private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
         {
             [ConsoleKey.Escape] = () => shouldContinue = false,
             [ConsoleKey.F9] = () => Beeper.DoBeepyTune(),
-            [ConsoleKey.LeftArrow] = () => player.xCoord -= moveSpeed,
-            [ConsoleKey.RightArrow] = () => player.xCoord += moveSpeed,
-            [ConsoleKey.UpArrow] = () => player.yCoord -= moveSpeed,
-            [ConsoleKey.DownArrow] = () => player.yCoord += moveSpeed,
+            [ConsoleKey.LeftArrow] = () => player.position.x -= moveSpeed,
+            [ConsoleKey.RightArrow] = () => player.position.x += moveSpeed,
+            [ConsoleKey.UpArrow] = () => player.position.y -= moveSpeed,
+            [ConsoleKey.DownArrow] = () => player.position.y += moveSpeed,
             [ConsoleKey.W] = () => moveSpeed++,
             [ConsoleKey.S] = () => moveSpeed--,
             [ConsoleKey.F1] = () => ShowHelp(),
@@ -88,15 +151,13 @@ namespace splatRunner
             allSprites.Add(enemy);
             allSprites.Add(new Enemy
             {
-                xCoord = velocityGenerator.Next(0, Console.WindowWidth),
-                yCoord = velocityGenerator.Next(0, Console.WindowHeight),
+                position = CreateRandomCoordinates(),
                 symbol = "1"
             });
 
             allSprites.Add(new Enemy
             {
-                xCoord = velocityGenerator.Next(0, Console.WindowWidth),
-                yCoord = velocityGenerator.Next(0, Console.WindowHeight),
+                position = CreateRandomCoordinates(),
                 symbol = "2"
             });
 
