@@ -7,22 +7,6 @@ namespace splatRunner
 {
     class Program
     {
-        static List<Character> allSprites = new List<Character>();
-
-        static Character player = new Character
-        {
-            position = Coordinates.CreateCenterCoordinates(),
-            symbol = "@",
-            Colour = ConsoleColor.Green,
-        };
-
-        static Character enemy = new Enemy
-        {
-            position = Coordinates.CreateRandomCoordinates(),
-            symbol = "#",
-            Colour = ConsoleColor.Red,
-        };
-
         private static bool shouldContinue = true;
         private static int moveSpeed = 1;
 
@@ -40,6 +24,8 @@ namespace splatRunner
             [ConsoleKey.UpArrow] = () => player.MoveUp(moveSpeed),
             [ConsoleKey.DownArrow] = () => player.MoveDown(moveSpeed),
         };
+        
+        static List<Character> allSprites = new List<Character>();
 
         static Enemy ememy1 = new Enemy
         {
@@ -55,6 +41,20 @@ namespace splatRunner
             Colour = ConsoleColor.DarkYellow,
         };
 
+        static Character player = new Character
+        {
+            position = Coordinates.CreateCenterCoordinates(),
+            symbol = "@",
+            Colour = ConsoleColor.Green,
+        };
+
+        static Character enemy = new Enemy
+        {
+            position = Coordinates.CreateRandomCoordinates(),
+            symbol = "#",
+            Colour = ConsoleColor.Red,
+        };
+        
         private static void ShowHelp()
         {
             Console.SetCursorPosition(0, 0);
