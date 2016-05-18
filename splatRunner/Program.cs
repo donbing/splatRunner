@@ -11,11 +11,7 @@ namespace splatRunner
 
         static Character player = new Character
         {
-            position = new Coordinates
-            {
-                x = Console.WindowWidth / 2,
-                y = Console.WindowHeight / 2,
-            },
+            position = Coordinates.CreateCenterCoordinates(),
             symbol = "@",
             Colour = ConsoleColor.Green,
         };

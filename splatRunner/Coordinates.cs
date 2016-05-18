@@ -16,5 +16,14 @@ namespace splatRunner
                 y = velocityGenerator.Next(0, Console.WindowHeight),
             };
         }
+
+        public static Coordinates CreateCenterCoordinates()
+        {
+            return new Coordinates
+            {
+                x = Console.WindowWidth / 2,
+                y = Console.WindowHeight / 2,
+            };
+        }
     }
 }
