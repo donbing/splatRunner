@@ -25,12 +25,13 @@ namespace splatRunner
             [ConsoleKey.DownArrow] = () => player.MoveDown(moveSpeed),
         };
         
-        static List<Character> allSprites = new List<Character>();
-
-        static Enemy ememy1 = Enemy.CreateEmemy("1", ConsoleColor.Gray);
-        static Enemy ponenomy2 = Enemy.CreateEmemy("2", ConsoleColor.DarkYellow);
-        static Character enemy = Enemy.CreateEmemy("#", ConsoleColor.Red);
-
+        static List<Character> allSprites = new List<Character>
+        {
+            Enemy.CreateEmemy("1", ConsoleColor.Gray),
+            Enemy.CreateEmemy("2", ConsoleColor.DarkYellow),
+            Enemy.CreateEmemy("#", ConsoleColor.Red),
+        };
+        
         static Character player = new Character
         {
             position = Coordinates.CreateCenterCoordinates(),
@@ -54,9 +55,6 @@ namespace splatRunner
             Console.Clear();
 
             allSprites.Add(player);
-            allSprites.Add(enemy);
-            allSprites.Add(ememy1);
-            allSprites.Add(ponenomy2);
 
             foreach (var character in allSprites)
             {
