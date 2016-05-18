@@ -7,8 +7,6 @@ namespace splatRunner
 {
     class Program
     {
-        private static Random velocityGenerator = new Random();
-
         static List<Character> allSprites = new List<Character>();
 
         static Character player = new Character
@@ -24,19 +22,10 @@ namespace splatRunner
 
         static Character enemy = new Enemy
         {
-            position = CreateRandomCoordinates(),
+            position = Coordinates.CreateRandomCoordinates(),
             symbol = "#",
             Colour = ConsoleColor.Red,
         };
-
-        static Coordinates CreateRandomCoordinates()
-        {
-            return new Coordinates()
-            {
-                x = velocityGenerator.Next(0, Console.WindowWidth),
-                y = velocityGenerator.Next(0, Console.WindowHeight),
-            };
-        }
 
         private static bool shouldContinue = true;
         private static int moveSpeed = 1;
@@ -58,14 +47,14 @@ namespace splatRunner
 
         static Enemy ememy1 = new Enemy
         {
-            position = CreateRandomCoordinates(),
+            position = Coordinates.CreateRandomCoordinates(),
             symbol = "1",
             Colour = ConsoleColor.Gray,
         };
 
         static Enemy ponenomy2 = new Enemy
         {
-            position = CreateRandomCoordinates(),
+            position = Coordinates.CreateRandomCoordinates(),
             symbol = "2",
             Colour = ConsoleColor.DarkYellow,
         };
@@ -106,7 +95,6 @@ namespace splatRunner
 
                 if (MovementKeys.ContainsKey(userKeyPress.Key))
                 {
-
                     Console.Clear();
                     foreach (var character in allSprites)
                     {
