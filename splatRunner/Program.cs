@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConsoleApplication1;
 
 namespace splatRunner
@@ -24,12 +25,14 @@ namespace splatRunner
                 y = Console.WindowHeight / 2,
             },
             symbol = "@",
+            Colour = ConsoleColor.Green,
         };
 
         static Character enemy = new Enemy
         {
             position = CreateRandomCoordinates(),
             symbol = "#",
+            Colour = ConsoleColor.Red,
         };
 
          static Coordinates CreateRandomCoordinates()
@@ -44,37 +47,41 @@ namespace splatRunner
          private static bool shouldContinue = true;
         private static int moveSpeed = 1;
 
-        private static readonly Dictionary<ConsoleKey, Action> KeyActions = new Dictionary<ConsoleKey, Action>
+        static readonly Dictionary<ConsoleKey, Action> FunctionKeys = new Dictionary<ConsoleKey, Action>
         {
             [ConsoleKey.Escape] = () => shouldContinue = false,
+            [ConsoleKey.F1] = () => ShowHelp(),
             [ConsoleKey.F9] = () => Beeper.DoBeepyTune(),
+        };
+
+        private static readonly Dictionary<ConsoleKey, Action> MovementKeys = new Dictionary<ConsoleKey, Action>
+        {
             [ConsoleKey.LeftArrow] = () => player.MoveLeft(moveSpeed),
             [ConsoleKey.RightArrow] = () => player.MoveRight(moveSpeed),
             [ConsoleKey.UpArrow] = () => player.MoveUp(moveSpeed),
             [ConsoleKey.DownArrow] = () => player.MoveDown(moveSpeed),
-            [ConsoleKey.W] = () => moveSpeed++,
-            [ConsoleKey.S] = () => moveSpeed--,
-            [ConsoleKey.F1] = () => ShowHelp(),
         };
 
         static Enemy ememy1 = new Enemy
         {
             position = CreateRandomCoordinates(),
-            symbol = "1"
+            symbol = "1",
+            Colour = ConsoleColor.Gray,
         };
 
         static Enemy ponenomy2 = new Enemy
         {
             position = CreateRandomCoordinates(),
-            symbol = "2"
+            symbol = "2",
+            Colour = ConsoleColor.DarkYellow,
         };
         
         private static void ShowHelp()
         {
             Console.SetCursorPosition(0, 0);
-            foreach (var actionKey in KeyActions)
+            foreach (var commandKey in FunctionKeys.Concat(MovementKeys))
             {
-                Console.WriteLine(actionKey);
+                Console.WriteLine(commandKey);
             }
         }
 
@@ -89,18 +96,29 @@ namespace splatRunner
             allSprites.Add(ememy1);
             allSprites.Add(ponenomy2);
 
+            foreach (var character in allSprites)
+            {
+                character.WriteCharacterAtPosition();
+            }
+
             while (shouldContinue)
             {
-                foreach (var character in allSprites)
+               var userKeyPress = Console.ReadKey(true);
+
+                if (FunctionKeys.ContainsKey(userKeyPress.Key))
                 {
-                    character.WriteCharacterAtPosition();
+                    FunctionKeys[userKeyPress.Key].Invoke();
                 }
 
-                var move = Console.ReadKey();
-                Console.Clear();
-                if (KeyActions.ContainsKey(move.Key))
+                if (MovementKeys.ContainsKey(userKeyPress.Key))
                 {
-                    KeyActions[move.Key].Invoke();
+
+                    Console.Clear();
+                    foreach (var character in allSprites)
+                    {
+                        character.WriteCharacterAtPosition();
+                    }
+                    MovementKeys[userKeyPress.Key].Invoke();
                 }
             }
         }

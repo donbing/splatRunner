@@ -9,12 +9,17 @@ namespace splatRunner
         
         public override void WriteCharacterAtPosition()
         {
+            var previousColour = Console.ForegroundColor;
+            Console.ForegroundColor = Colour;
+
             previousCoords = position;
 
-            GetValue();
+            DrawAtRandomPosition();
+
+            Console.ForegroundColor = previousColour;
         }
 
-        void GetValue()
+        void DrawAtRandomPosition()
         {
             var nextCoords = NextCoords();
 
@@ -30,7 +35,7 @@ namespace splatRunner
             }
             else
             {
-                GetValue();
+                DrawAtRandomPosition();
             }
         }
 
