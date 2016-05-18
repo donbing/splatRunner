@@ -5,23 +5,17 @@ using ConsoleApplication1;
 
 namespace splatRunner
 {
-    public class Coordinates
-    {
-        public int x { get; set; }
-        public int y { get; set; }
-    }
-
     class Program
     {
         private static Random velocityGenerator = new Random();
 
         static List<Character> allSprites = new List<Character>();
-         
+
         static Character player = new Character
         {
             position = new Coordinates
             {
-                x = Console.WindowWidth / 2, 
+                x = Console.WindowWidth / 2,
                 y = Console.WindowHeight / 2,
             },
             symbol = "@",
@@ -35,16 +29,16 @@ namespace splatRunner
             Colour = ConsoleColor.Red,
         };
 
-         static Coordinates CreateRandomCoordinates()
-         {
-             return new Coordinates()
-             {
-                 x = velocityGenerator.Next(0, Console.WindowWidth),
-                 y = velocityGenerator.Next(0, Console.WindowHeight),
-             };
-         }
+        static Coordinates CreateRandomCoordinates()
+        {
+            return new Coordinates()
+            {
+                x = velocityGenerator.Next(0, Console.WindowWidth),
+                y = velocityGenerator.Next(0, Console.WindowHeight),
+            };
+        }
 
-         private static bool shouldContinue = true;
+        private static bool shouldContinue = true;
         private static int moveSpeed = 1;
 
         static readonly Dictionary<ConsoleKey, Action> FunctionKeys = new Dictionary<ConsoleKey, Action>
@@ -54,7 +48,7 @@ namespace splatRunner
             [ConsoleKey.F9] = () => Beeper.DoBeepyTune(),
         };
 
-        private static readonly Dictionary<ConsoleKey, Action> MovementKeys = new Dictionary<ConsoleKey, Action>
+        static readonly Dictionary<ConsoleKey, Action> MovementKeys = new Dictionary<ConsoleKey, Action>
         {
             [ConsoleKey.LeftArrow] = () => player.MoveLeft(moveSpeed),
             [ConsoleKey.RightArrow] = () => player.MoveRight(moveSpeed),
@@ -75,7 +69,7 @@ namespace splatRunner
             symbol = "2",
             Colour = ConsoleColor.DarkYellow,
         };
-        
+
         private static void ShowHelp()
         {
             Console.SetCursorPosition(0, 0);
@@ -103,7 +97,7 @@ namespace splatRunner
 
             while (shouldContinue)
             {
-               var userKeyPress = Console.ReadKey(true);
+                var userKeyPress = Console.ReadKey(true);
 
                 if (FunctionKeys.ContainsKey(userKeyPress.Key))
                 {
