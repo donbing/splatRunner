@@ -27,17 +27,7 @@ namespace splatRunner
         
         static List<Character> allSprites = new List<Character>();
 
-        static Enemy ememy1 = CreateEmemy1("1", ConsoleColor.Gray);
-
-        static Enemy CreateEmemy1(string symbol, ConsoleColor consoleColor)
-        {
-            return new Enemy
-            {
-                position = Coordinates.CreateRandomCoordinates(),
-                symbol = symbol,
-                Colour = consoleColor,
-            };
-        }
+        static Enemy ememy1 = Enemy.CreateEmemy1("1", ConsoleColor.Gray);
 
         static Enemy ponenomy2 = new Enemy
         {

@@ -49,6 +49,15 @@ namespace splatRunner
             return nextCoords;
         }
 
-        
+
+        public static Enemy CreateEmemy1(string symbol, ConsoleColor consoleColor)
+        {
+            return new Enemy
+            {
+                position = Coordinates.CreateRandomCoordinates(),
+                symbol = symbol,
+                Colour = consoleColor,
+            };
+        }
     }
 }
