@@ -50,7 +50,7 @@ namespace splatRunner
         }
 
 
-        public static Enemy CreateEmemy1(string symbol, ConsoleColor consoleColor)
+        public static Enemy CreateEmemy(string symbol, ConsoleColor consoleColor)
         {
             return new Enemy
             {
