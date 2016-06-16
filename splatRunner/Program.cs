@@ -24,19 +24,23 @@ namespace splatRunner
             [ConsoleKey.UpArrow] = () => player.MoveUp(moveSpeed),
             [ConsoleKey.DownArrow] = () => player.MoveDown(moveSpeed),
         };
-        
-        static List<Character> allSprites = new List<Character>
-        {
-            Enemy.CreateEmemy("1", ConsoleColor.Gray),
-            Enemy.CreateEmemy("2", ConsoleColor.DarkYellow),
-            Enemy.CreateEmemy("#", ConsoleColor.Red),
-        };
-        
+
         static Character player = new Character
         {
             position = Coordinates.CreateCenterCoordinates(),
             symbol = "@",
             Colour = ConsoleColor.Green,
+        };
+
+        static List<Character> allSprites = new List<Character>
+        {
+            Enemy.CreateEmemy("1", ConsoleColor.Blue),
+            Enemy.CreateEmemy("2", ConsoleColor.DarkYellow),
+            Enemy.CreateEmemy("#", ConsoleColor.Red),
+            Squirrel.Create(),
+            Squirrel.Create(),
+            Squirrel.Create(),
+            player,
         };
         
         private static void ShowHelp()
@@ -53,9 +57,7 @@ namespace splatRunner
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
             Console.Clear();
-
-            allSprites.Add(player);
-
+            
             foreach (var character in allSprites)
             {
                 character.WriteCharacterAtPosition();
@@ -73,11 +75,37 @@ namespace splatRunner
                 if (MovementKeys.ContainsKey(userKeyPress.Key))
                 {
                     Console.Clear();
-                    foreach (var character in allSprites)
+                    MovementKeys[userKeyPress.Key].Invoke();
+
+                    var allEnemies = allSprites.Except(new List<Character>() { player }).OfType<Enemy>();
+
+                    foreach (var character in allEnemies)
+                    {
+                        character.RecalculatePosition();
+                    }
+                    
+                    foreach (var enemy in allEnemies.ToList())
+                    {
+                        if (enemy.position.y == player.position.y && enemy.position.x == player.position.x)
+                        {
+                            if (enemy is Squirrel)
+                            {
+                                allSprites.Remove(enemy);
+                            }
+                            else
+                            {
+                                allSprites.Remove(player);
+                                shouldContinue = false;
+                                Console.WriteLine("GAME OVER");
+                                Console.ReadKey();
+                            }
+                        }
+                    }
+                        foreach (var character in allSprites.ToList())
                     {
                         character.WriteCharacterAtPosition();
                     }
-                    MovementKeys[userKeyPress.Key].Invoke();
+                    
                 }
             }
         }

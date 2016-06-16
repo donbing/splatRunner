@@ -2,24 +2,44 @@ using System;
 
 namespace splatRunner
 {
+    public class Squirrel : Enemy
+    {
+        public static Squirrel Create()
+        {
+            return new Squirrel()
+            {
+                position = Coordinates.CreateRandomCoordinates(),
+                symbol = "&",
+                Colour = ConsoleColor.Gray,
+            };
+        }
+    }
     public class Enemy : Character
     {
         private static Random velocityGenerator = new Random();
         Coordinates previousCoords;
-        
+
+
+        public void RecalculatePosition()
+        {
+            previousCoords = position;
+
+            MakeRandomNewPosition();
+        }
+
         public override void WriteCharacterAtPosition()
         {
             var previousColour = Console.ForegroundColor;
             Console.ForegroundColor = Colour;
 
-            previousCoords = position;
-
-            DrawAtRandomPosition();
+            Coordinates nextCoords = position;
+            Console.SetCursorPosition(nextCoords.x, nextCoords.y);
+            Console.Write(symbol);
 
             Console.ForegroundColor = previousColour;
         }
 
-        void DrawAtRandomPosition()
+        void MakeRandomNewPosition()
         {
             var nextCoords = NextCoords();
 
@@ -27,15 +47,13 @@ namespace splatRunner
             {
                 // best enemy name ever! enemyPoenemy1YonY
                 EdgeLooper(nextCoords);
-                Console.SetCursorPosition(nextCoords.x, nextCoords.y);
-                Console.Write(symbol);
-
+                
                 position.y = nextCoords.y;
                 position.x = nextCoords.x;
             }
             else
             {
-                DrawAtRandomPosition();
+                MakeRandomNewPosition();
             }
         }
 
